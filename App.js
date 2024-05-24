@@ -7,6 +7,8 @@ import ImageViewer from './components/ImageViewer';
 import Button from './components/Button';
 import IconButton from './components/IconButton';
 import CircleButton from './components/CircleButton';
+import EmojiPicker from './components/EmojiPicker';
+import EmojiList from './components/EmojiList';
 
 
 const PlaceholderImage = require('./assets/images/background-image.png')
@@ -15,13 +17,19 @@ const PlaceholderImage = require('./assets/images/background-image.png')
 export default function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showAppOptions, setShowAppOptions] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [pickedEmoji, setPickedEmoji] = useState(null)
 
   const onRest = () => {
     setShowAppOptions(false);
   };
   const onAddSticker = () => {
+    setIsModalVisible(true);
     // wew will implement this later
   };
+  const onModalClose = () => {
+    setIsModalVisible(false);
+  }
   const onSaveImageAsync = async() => {
     // we will implement this later
   };
@@ -43,18 +51,14 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={ styles.imageContainer}>
-      <Text style ={{color: '#fff', alignSelf: 'center', marginBottom: 15}}>
-        Image below show a trail on beach
-      </Text>
         {/* no placeholderImageSource abaixo voçe precisa exibir uma imagem padrao */}
         <ImageViewer 
         placeholderImageSource={PlaceholderImage}
         selectedImage={selectedImage}
         />
-      <StatusBar style="auto"/>
       </View>
       {/* Se estiver selcionado uma imagem o primeiro botao vai sumir */}
-      {showAppOptions ?(
+      {showAppOptions ? (
         <View style={styles.optionsContainer} >
           <View style={styles.optionsRow}>
             <IconButton icon='refresh' label='Reset' onPress={onRest} />
@@ -68,6 +72,10 @@ export default function App() {
         <Button label='Use this photo' onPress={() => setShowAppOptions(true)}/>
       </View>
       )}
+      <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
+        <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
+      </EmojiPicker>
+      <StatusBar style="auto"/>
     </View>
   );
 }
