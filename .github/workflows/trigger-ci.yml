@@ -1,0 +1,20 @@
+name: Run tests
+
+on: [push]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout automation framework
+      uses: actions/checkout@v2
+      with:
+        repository: joseivo01/cypress-E2E-test-implement-CI-CD
+        ref: main
+        path: cypress
+
+    - name: Install dependencies
+      run: cd cypress && npm install
+
+    - name: Run tests
+      run: cd tests && npm run cypress:run
